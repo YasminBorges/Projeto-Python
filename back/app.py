@@ -80,6 +80,13 @@ def create_app(config_name):
             result = [dict(zip(tuple(query.keys()), i)) for i in query.cursor]
             return jsonify(result)
         
+    @app.route('/monitoramento/gauge', methods=['GET'])
+    def gauge():
+        if ( request.method == "GET" ):
+            conn = db_connect.connect()
+            query = conn.execute(text('SELECT avg(temperatura) AS TEMPERATURA_MEDIA,avg(umidade) AS UMIDADE_MEDIA,avg(luminosidade) as LUMINOSIDADE_MEDIA FROM monitoramento'))
+            result = [dict(zip(tuple(query.keys()), i)) for i in query.cursor]
+            return jsonify(result)
         
        
     return app
